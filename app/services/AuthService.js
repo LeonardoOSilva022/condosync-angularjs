@@ -14,22 +14,22 @@ angular.module('meuApp').factory('AuthService', function($window) {
                 return false;
             }
         }
+        userPayload = null; // Garante que o payload está limpo se não houver token
         return false;
     }
 
     authService.getToken = function() { return $window.localStorage.getItem('token'); };
     
     authService.isLoggedIn = function() {
-        if (userPayload) {
-            return true; // Se já temos o payload, está logado
-        }
-        return decodeToken(); // Se não, tenta decodificar
+        // Apenas verifica se o token pode ser decodificado corretamente
+        return decodeToken();
     };
 
     authService.currentUser = function() {
         if (!userPayload) {
-            decodeToken(); // Garante que o payload foi carregado
+            decodeToken();
         }
+        // Retorna o payload completo, que inclui name, role, e unitNumber
         return userPayload;
     };
     
