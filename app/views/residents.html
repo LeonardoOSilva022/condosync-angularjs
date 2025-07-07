@@ -2,54 +2,47 @@
   <div class="flex justify-between items-center mb-8">
     <div>
       <h1 class="text-3xl font-bold tracking-tight">Moradores</h1>
-      <p class="text-muted-foreground">
-        Gerencie os moradores do condomínio
-      </p>
+      <p class="text-muted-foreground">Gerencie os moradores do condomínio</p>
     </div>
-    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+    <button ng-click="openAddModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
       <i data-lucide="plus" class="mr-2 h-4 w-4"></i>
-      Adicionar Morador
+      <span>Adicionar Morador</span>
     </button>
   </div>
 
   <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
-    <div class="p-6">
-      <h3 class="text-2xl font-semibold leading-none tracking-tight">Lista de Moradores</h3>
-    </div>
-    <div class="p-6 pt-0">
-      <div class="relative w-full overflow-auto">
-        <table class="w-full caption-bottom text-sm">
-          <thead class="[&_tr]:border-b">
-            <tr class="border-b transition-colors hover:bg-muted/50">
-              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Nome</th>
-              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Unidade</th>
-              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Telefone</th>
-              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Email</th>
-              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Status</th>
-              <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Ações</th>
-            </tr>
-          </thead>
-          <tbody class="[&_tr:last-child]:border-0">
-            <tr ng-repeat="resident in residents" class="border-b transition-colors hover:bg-muted/50">
-              <td class="p-4 align-middle font-medium">{{ resident.name }}</td>
-              <td class="p-4 align-middle">{{ resident.unit }}</td>
-              <td class="p-4 align-middle">{{ resident.phone }}</td>
-              <td class="p-4 align-middle">{{ resident.email }}</td>
-              <td class="p-4 align-middle">
-                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="resident.statusClass">
-                  {{ resident.status }}
-                </span>
-              </td>
-              <td class="p-4 align-middle">
-                <div class="flex space-x-2">
-                  <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">Editar</button>
-                  <button ng-click="removeResident(resident)" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-destructive/50 text-destructive hover:bg-destructive/10 h-9 px-3">Remover</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <div class="p-6"><h3 class="text-2xl font-semibold leading-none tracking-tight">Lista de Moradores</h3></div>
+    <div class="p-6 pt-0"><div class="relative w-full overflow-auto">
+      <table class="w-full caption-bottom text-sm">
+        <thead><tr class="border-b"><th class="h-12 px-4 text-left">Nome</th><th class="h-12 px-4 text-left">Unidade</th><th class="h-12 px-4 text-left">Telefone</th><th class="h-12 px-4 text-left">Email</th><th class="h-12 px-4 text-left">Status</th><th class="h-12 px-4 text-left">Ações</th></tr></thead>
+        <tbody>
+          <tr ng-repeat="resident in residents" class="border-b">
+            <td class="p-4 font-medium">{{ resident.name }}</td>
+            <td class="p-4">{{ resident.unit }}</td>
+            <td class="p-4">{{ resident.phone }}</td>
+            <td class="p-4">{{ resident.email }}</td>
+            <td class="p-4"><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="resident.statusClass">{{ resident.status }}</span></td>
+            <td class="p-4">
+              <div class="flex space-x-2">
+                <button ng-click="openEditModal(resident)" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3 hover:bg-accent">Editar</button>
+                <button ng-click="openDeleteModal(resident)" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-destructive/50 text-destructive hover:bg-destructive/10 h-9 px-3">Remover</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <div ng-show="modals.add.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <form name="addForm" ng-submit="addResident()" novalidate class="relative rounded-lg border bg-card w-full max-w-lg"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Adicionar Novo Morador</h3><button type="button" ng-click="closeAllModals()" class="absolute right-4 top-4 opacity-70"><i data-lucide="x" class="h-4 w-4"></i></button></div><div class="p-6 pt-0 space-y-4"><div class="space-y-2"><label class="text-sm font-medium">Nome Completo</label><input ng-model="newResident.name" required class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div><div class="grid grid-cols-2 gap-4"><div class="space-y-2"><label class="text-sm font-medium">Unidade</label><input ng-model="newResident.unit" required class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div><div class="space-y-2"><label class="text-sm font-medium">Status</label><select ng-model="newResident.status" required class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"><option value="Proprietário">Proprietário</option><option value="Inquilino">Inquilino</option></select></div></div><div class="grid grid-cols-2 gap-4"><div class="space-y-2"><label class="text-sm font-medium">Telefone</label><input ng-model="newResident.phone" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div><div class="space-y-2"><label class="text-sm font-medium">Email</label><input ng-model="newResident.email" type="email" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div></div></div><div class="flex items-center p-6 justify-end"><button type="submit" ng-disabled="addForm.$invalid" class="bg-primary text-primary-foreground h-10 px-4 py-2 inline-flex items-center justify-center rounded-md text-sm font-medium disabled:opacity-50">Adicionar</button></div></form>
+  </div>
+
+  <div ng-show="modals.edit.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <form name="editForm" ng-submit="updateResident()" novalidate class="relative rounded-lg border bg-card w-full max-w-lg"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Editar Morador</h3><p class="text-sm text-muted-foreground">Editando dados de {{ modals.edit.data.name }}</p><button type="button" ng-click="closeAllModals()" class="absolute right-4 top-4 opacity-70"><i data-lucide="x" class="h-4 w-4"></i></button></div><div class="p-6 pt-0 space-y-4"><div class="space-y-2"><label class="text-sm font-medium">Nome Completo</label><input ng-model="modals.edit.data.name" required class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div><div class="grid grid-cols-2 gap-4"><div class="space-y-2"><label class="text-sm font-medium">Unidade</label><input ng-model="modals.edit.data.unit" required class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div><div class="space-y-2"><label class="text-sm font-medium">Status</label><select ng-model="modals.edit.data.status" required class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"><option value="Proprietário">Proprietário</option><option value="Inquilino">Inquilino</option></select></div></div><div class="grid grid-cols-2 gap-4"><div class="space-y-2"><label class="text-sm font-medium">Telefone</label><input ng-model="modals.edit.data.phone" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div><div class="space-y-2"><label class="text-sm font-medium">Email</label><input ng-model="modals.edit.data.email" type="email" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div></div></div><div class="flex items-center p-6 justify-end"><button type="submit" ng-disabled="editForm.$invalid" class="bg-primary text-primary-foreground h-10 px-4 py-2 inline-flex items-center justify-center rounded-md text-sm font-medium disabled:opacity-50">Salvar Alterações</button></div></form>
+  </div>
+
+  <div ng-show="modals.delete.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <div class="relative rounded-lg border bg-card w-full max-w-md"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Confirmar Remoção</h3><p class="text-sm text-muted-foreground">Tem certeza que deseja remover o morador <strong>{{ modals.delete.data.name }}</strong>? Esta ação não pode ser desfeita.</p></div><div class="flex items-center p-6 pt-0 justify-end space-x-2"><button ng-click="closeAllModals()" class="border bg-background h-10 px-4 py-2 inline-flex items-center justify-center rounded-md text-sm font-medium">Cancelar</button><button ng-click="deleteResident()" class="bg-destructive text-destructive-foreground h-10 px-4 py-2 inline-flex items-center justify-center rounded-md text-sm font-medium">Remover</button></div></div>
   </div>
 </div>

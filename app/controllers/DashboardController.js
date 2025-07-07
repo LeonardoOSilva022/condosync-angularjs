@@ -24,12 +24,10 @@ angular
         totalFees: 12500,
         pendingReservations: 3
       },
-      // Função para calcular a porcentagem de ocupação
       getOccupancyRate: function() {
         if (!this.stats.units) return 0;
         return ((this.stats.occupiedUnits / this.stats.units) * 100).toFixed(0);
       },
-      // Função para calcular a inadimplência
       getDelinquencyRate: function() {
         if (!this.stats.units) return 0;
         return ((this.stats.pendingFees / this.stats.units) * 100).toFixed(0);
@@ -40,8 +38,8 @@ angular
         { title: "Limpeza da Caixa d'Água", date: "25/05/2025" }
       ],
       recentComplaints: [
-        { title: "Vazamento no Teto", unit: "202", date: "18/05/2025" },
-        { title: "Barulho após 22h", unit: "101", date: "17/05/2025" }
+        { title: "Vazamento no Teto", unit: "202", date: "18/05/2025", status: "Pendente", statusClass: "bg-destructive/20 text-destructive" },
+        { title: "Barulho após 22h", unit: "101", date: "17/05/2025", status: "Pendente", statusClass: "bg-destructive/20 text-destructive" }
       ]
     };
 

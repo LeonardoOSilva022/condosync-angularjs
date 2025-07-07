@@ -1,425 +1,44 @@
 <div render-lucide-icons>
   <div class="flex justify-between items-center mb-8">
-    <div>
-      <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
-      <p class="text-muted-foreground">
-        Olá, {{ user.name }}. Bem-vindo ao CondoSync!
-      </p>
-    </div>
+    <div><h1 class="text-3xl font-bold tracking-tight">Dashboard</h1><p class="text-muted-foreground">Olá, {{ user.name }}. Bem-vindo ao CondoSync!</p></div>
   </div>
 
   <div ng-if="isManager">
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
-      <div class="rounded-lg border bg-card p-6">
-        <div class="flex flex-row items-center justify-between pb-2">
-          <h3 class="text-sm font-medium">Unidades</h3>
-          <i data-lucide="building" class="h-4 w-4 text-muted-foreground"></i>
-        </div>
-        <div>
-          <div class="text-2xl font-bold">
-            {{ managerData.stats.occupiedUnits }}/{{ managerData.stats.units }}
-          </div>
-          <p class="text-xs text-muted-foreground">
-            {{ managerData.getOccupancyRate() }}% de ocupação
-          </p>
-        </div>
-      </div>
-      <div class="rounded-lg border bg-card p-6">
-        <div class="flex flex-row items-center justify-between pb-2">
-          <h3 class="text-sm font-medium">Moradores</h3>
-          <i data-lucide="users" class="h-4 w-4 text-muted-foreground"></i>
-        </div>
-        <div>
-          <div class="text-2xl font-bold">
-            {{ managerData.stats.residents }}
-          </div>
-          <p class="text-xs text-muted-foreground">Moradores cadastrados</p>
-        </div>
-      </div>
-      <div class="rounded-lg border bg-card p-6">
-        <div class="flex flex-row items-center justify-between pb-2">
-          <h3 class="text-sm font-medium">Taxa de Inadimplência</h3>
-          <i
-            data-lucide="trending-down"
-            class="h-4 w-4 text-muted-foreground"
-          ></i>
-        </div>
-        <div>
-          <div class="text-2xl font-bold">
-            {{ managerData.getDelinquencyRate() }}%
-          </div>
-          <p class="text-xs text-muted-foreground">Unidades com pendências</p>
-        </div>
-      </div>
-      <div class="rounded-lg border bg-card p-6">
-        <div class="flex flex-row items-center justify-between pb-2">
-          <h3 class="text-sm font-medium">Reservas</h3>
-          <i data-lucide="calendar" class="h-4 w-4 text-muted-foreground"></i>
-        </div>
-        <div>
-          <div class="text-2xl font-bold">
-            {{ managerData.stats.pendingReservations }}
-          </div>
-          <p class="text-xs text-muted-foreground">Aguardando aprovação</p>
-        </div>
-      </div>
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5 mb-6">
+      <div class="rounded-lg border bg-card p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium">Unidades</h3><i data-lucide="building" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">{{ managerData.stats.occupiedUnits }}/{{ managerData.stats.units }}</div><p class="text-xs text-muted-foreground">{{ managerData.getOccupancyRate() }}% de ocupação</p></div></div>
+      <div class="rounded-lg border bg-card p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium">Moradores</h3><i data-lucide="users" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">{{ managerData.stats.residents }}</div><p class="text-xs text-muted-foreground">Moradores cadastrados</p></div></div>
+      <div class="rounded-lg border bg-card p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium">Taxas Pendentes</h3><i data-lucide="dollar-sign" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">{{ managerData.stats.pendingFees }}</div><p class="text-xs text-muted-foreground">R$ {{ managerData.stats.totalFees.toFixed(2) }} a receber</p></div></div>
+      <div class="rounded-lg border bg-card p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium">Inadimplência</h3><i data-lucide="trending-down" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">{{ managerData.getDelinquencyRate() }}%</div><p class="text-xs text-muted-foreground">Unidades com pendências</p></div></div>
+      <div class="rounded-lg border bg-card p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium">Reservas</h3><i data-lucide="calendar" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">{{ managerData.stats.pendingReservations }}</div><p class="text-xs text-muted-foreground">Aguardando aprovação</p></div></div>
     </div>
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <div class="rounded-lg border bg-card md:col-span-2">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold">Avisos Recentes</h3>
-          <p class="text-sm text-muted-foreground">Últimos avisos enviados</p>
-        </div>
-        <div class="p-6 pt-0">
-          <div class="space-y-4">
-            <div
-              ng-repeat="item in managerData.recentAnnouncements"
-              class="border rounded-lg p-3"
-            >
-              <h4 class="font-medium">{{item.title}}</h4>
-              <p class="text-sm text-muted-foreground">{{item.date}}</p>
-            </div>
-          </div>
-          <div class="mt-4 text-right">
-            <a
-              ui-sref="app.announcements"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input h-9 px-3 hover:bg-accent"
-              >Ver Todos</a
-            ><a
-              ui-sref="app.announcements"
-              class="ml-2 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-9 px-3"
-              ><i data-lucide="bell" class="mr-2 h-4 w-4"></i>Novo Aviso</a
-            >
-          </div>
-        </div>
-      </div>
-      <div class="rounded-lg border bg-card">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold">Reclamações Recentes</h3>
-          <p class="text-sm text-muted-foreground">Reclamações pendentes</p>
-        </div>
-        <div class="p-6 pt-0">
-          <div class="space-y-4">
-            <div
-              ng-repeat="item in managerData.recentComplaints"
-              class="border rounded-lg p-3"
-            >
-              <h4 class="font-medium">{{item.title}}</h4>
-              <p class="text-xs text-muted-foreground">
-                Unidade {{item.unit}} - {{item.date}}
-              </p>
-            </div>
-          </div>
-          <div class="mt-4 text-right">
-            <a
-              ui-sref="app.complaints"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input h-9 px-3 hover:bg-accent"
-              ><i data-lucide="alert-triangle" class="mr-2 h-4 w-4"></i>Ver
-              Todas</a
-            >
-          </div>
-        </div>
-      </div>
+      <div class="rounded-lg border bg-card md:col-span-2 lg:col-span-2"><div class="p-6"><h3 class="text-2xl font-semibold">Avisos Recentes</h3><p class="text-sm text-muted-foreground">Últimos avisos enviados</p></div><div class="p-6 pt-0"><div class="space-y-4"><div ng-repeat="item in managerData.recentAnnouncements" class="border rounded-lg p-3"><h4 class="font-medium">{{item.title}}</h4><p class="text-sm text-muted-foreground">{{item.date}}</p></div></div><div class="mt-4 p-6 pt-0 text-right"><a ui-sref="app.announcements" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3 hover:bg-accent">Ver Todos</a><a ui-sref="app.announcements" class="ml-2 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-9 px-3"><i data-lucide="bell" class="mr-2 h-4 w-4"></i>Novo Aviso</a></div></div></div>
+      <div class="rounded-lg border bg-card"><div class="p-6"><h3 class="text-2xl font-semibold">Reclamações Recentes</h3><p class="text-sm text-muted-foreground">Reclamações pendentes</p></div><div class="p-6 pt-0"><div class="space-y-4"><div ng-repeat="item in managerData.recentComplaints" class="border rounded-lg p-3"><div class="flex items-start justify-between"><div><h4 class="font-medium">{{item.title}}</h4><p class="text-xs text-muted-foreground">Unidade {{item.unit}} - {{item.date}}</p></div><span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium" ng-class="item.statusClass">{{item.status}}</span></div></div></div><div class="mt-4 p-6 pt-0 text-right"><a ui-sref="app.complaints" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3 hover:bg-accent"><i data-lucide="alert-triangle" class="mr-2 h-4 w-4"></i>Ver Todas</a></div></div></div>
     </div>
   </div>
 
   <div ng-if="!isManager">
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-6">
-      <div class="rounded-lg border bg-card p-6">
-        <div class="flex flex-row items-center justify-between pb-2">
-          <h3 class="text-sm font-medium">Taxas Pendentes</h3>
-          <i
-            data-lucide="dollar-sign"
-            class="h-4 w-4 text-muted-foreground"
-          ></i>
-        </div>
-        <div>
-          <div class="text-2xl font-bold">
-            {{ residentData.stats.pendingFees }}
-          </div>
-          <p class="text-xs text-muted-foreground">
-            R$ {{ residentData.stats.totalPendingAmount.toFixed(2) }} a pagar
-          </p>
-        </div>
-      </div>
-      <div class="rounded-lg border bg-card p-6">
-        <div class="flex flex-row items-center justify-between pb-2">
-          <h3 class="text-sm font-medium">Reservas</h3>
-          <i data-lucide="calendar" class="h-4 w-4 text-muted-foreground"></i>
-        </div>
-        <div>
-          <div class="text-2xl font-bold">
-            {{ residentData.stats.upcomingReservations }}
-          </div>
-          <p class="text-xs text-muted-foreground">Reservas agendadas</p>
-        </div>
-      </div>
-      <div class="rounded-lg border bg-card p-6">
-        <div class="flex flex-row items-center justify-between pb-2">
-          <h3 class="text-sm font-medium">Minha Unidade</h3>
-          <span class="text-lg font-bold">{{ user.unitNumber }}</span>
-        </div>
-        <div class="pt-0">
-          <div class="text-sm">Morador</div>
-          <p class="text-xs text-muted-foreground">{{ user.name }}</p>
-        </div>
-      </div>
+      <div class="rounded-lg border bg-card p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium">Taxas Pendentes</h3><i data-lucide="dollar-sign" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">{{ residentData.stats.pendingFees }}</div><p class="text-xs text-muted-foreground">R$ {{ residentData.stats.totalPendingAmount.toFixed(2) }} a pagar</p></div></div>
+      <div class="rounded-lg border bg-card p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium">Reservas</h3><i data-lucide="calendar" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">{{ residentData.stats.upcomingReservations }}</div><p class="text-xs text-muted-foreground">Reservas agendadas</p></div></div>
+      <div class="rounded-lg border bg-card p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium">Minha Unidade</h3><span class="text-lg font-bold">{{ user.unitNumber }}</span></div><div class="pt-0"><div class="text-sm">Morador</div><p class="text-xs text-muted-foreground">{{ user.name }}</p></div></div>
     </div>
     <div class="grid gap-4 md:grid-cols-2 mt-4">
-      <div class="rounded-lg border bg-card">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold">Avisos Recentes</h3>
-          <p class="text-sm text-muted-foreground">
-            Últimos avisos do condomínio
-          </p>
-        </div>
-        <div class="p-6 pt-0">
-          <div class="space-y-4">
-            <div
-              ng-repeat="item in residentData.recentAnnouncements"
-              class="border rounded-lg p-3"
-            >
-              <h4 class="font-medium">{{item.title}}</h4>
-              <p class="text-sm text-muted-foreground">{{item.date}}</p>
-            </div>
-          </div>
-          <div class="mt-4 text-right">
-            <a
-              ui-sref="app.announcements"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3 hover:bg-accent"
-              ><i data-lucide="bell" class="mr-2 h-4 w-4"></i>Ver Todos</a
-            >
-          </div>
-        </div>
-      </div>
-      <div class="rounded-lg border bg-card">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold">Taxas Pendentes</h3>
-          <p class="text-sm text-muted-foreground">
-            Taxas condominiais a pagar
-          </p>
-        </div>
-        <div class="p-6 pt-0">
-          <div class="space-y-4">
-            <div
-              ng-repeat="tax in residentData.pendingTaxes"
-              class="border rounded-lg p-3"
-            >
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="font-medium">{{tax.description}}</h3>
-                  <p class="text-sm text-muted-foreground">
-                    Vencimento: {{tax.dueDate}}
-                  </p>
-                </div>
-                <span class="font-medium">R$ {{tax.amount.toFixed(2)}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="mt-4 text-right">
-            <a
-              ui-sref="app.fees"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3 hover:bg-accent"
-              ><i data-lucide="dollar-sign" class="mr-2 h-4 w-4"></i>Ver
-              Todas</a
-            >
-          </div>
-        </div>
-      </div>
+      <div class="rounded-lg border bg-card"><div class="p-6"><h3 class="text-2xl font-semibold">Avisos Recentes</h3><p class="text-sm text-muted-foreground">Últimos avisos do condomínio</p></div><div class="p-6 pt-0"><div class="space-y-4"><div ng-repeat="item in residentData.recentAnnouncements" class="border rounded-lg p-3"><h4 class="font-medium">{{item.title}}</h4><p class="text-sm text-muted-foreground">{{item.date}}</p></div></div><div class="mt-4 text-right"><a ui-sref="app.announcements" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3 hover:bg-accent"><i data-lucide="bell" class="mr-2 h-4 w-4"></i>Ver Todos</a></div></div></div>
+      <div class="rounded-lg border bg-card"><div class="p-6"><h3 class="text-2xl font-semibold">Taxas Pendentes</h3><p class="text-sm text-muted-foreground">Taxas condominiais a pagar</p></div><div class="p-6 pt-0"><div class="space-y-4"><div ng-repeat="tax in residentData.pendingTaxes" class="border rounded-lg p-3"><div class="flex justify-between items-start"><div><h3 class="font-medium">{{tax.description}}</h3><p class="text-sm text-muted-foreground">Vencimento: {{tax.dueDate}}</p></div><span class="font-medium">R$ {{tax.amount.toFixed(2)}}</span></div></div></div><div class="mt-4 text-right"><a ui-sref="app.fees" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3 hover:bg-accent"><i data-lucide="dollar-sign" class="mr-2 h-4 w-4"></i>Ver Todas</a></div></div></div>
     </div>
     <div class="grid gap-4 md:grid-cols-2 mt-4">
-      <div class="rounded-lg border bg-card">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold">Reservas</h3>
-          <p class="text-sm text-muted-foreground">
-            Suas reservas de áreas comuns
-          </p>
-        </div>
-        <div class="p-6 pt-0">
-          <div class="space-y-4">
-            <div
-              ng-repeat="res in residentData.upcomingReservationsList"
-              class="border rounded-lg p-3"
-            >
-              <div class="flex justify-between items-start">
-                <div>
-                  <h3 class="font-medium">{{res.area}}</h3>
-                  <p class="text-sm text-muted-foreground">
-                    {{res.date}}, {{res.time}}
-                  </p>
-                </div>
-                <span
-                  class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                  ng-class="res.statusClass"
-                  >{{res.status}}</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="mt-4 text-right">
-            <a
-              ui-sref="app.reservations"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3"
-              >Ver Minhas Reservas</a
-            ><button
-              ng-click="openCommonAreasModal()"
-              class="ml-2 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-9 px-3"
-            >
-              <i data-lucide="calendar" class="mr-2 h-4 w-4"></i>Nova Reserva
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="rounded-lg border bg-card">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold">Ações Rápidas</h3>
-          <p class="text-sm text-muted-foreground">
-            Acesso rápido às funcionalidades
-          </p>
-        </div>
-        <div class="p-6 pt-0">
-          <div class="grid grid-cols-2 gap-3">
-            <button
-              ng-click="openNewComplaintModal()"
-              class="h-auto py-4 flex flex-col items-center justify-center rounded-md border hover:bg-accent"
-            >
-              <i data-lucide="alert-triangle" class="h-5 w-5 mb-1"></i
-              ><span>Nova Reclamação</span>
-            </button>
-            <button
-              ng-click="openCommonAreasModal()"
-              class="h-auto py-4 flex flex-col items-center justify-center rounded-md border hover:bg-accent"
-            >
-              <i data-lucide="building" class="h-5 w-5 mb-1"></i
-              ><span>Áreas Comuns</span>
-            </button>
-            <a
-              ui-sref="app.messages"
-              class="h-auto py-4 flex flex-col items-center justify-center rounded-md border hover:bg-accent"
-              ><i data-lucide="message-square" class="h-5 w-5 mb-1"></i
-              ><span>Mensagens</span></a
-            >
-            <a
-              ui-sref="app.settings"
-              class="h-auto py-4 flex flex-col items-center justify-center rounded-md border hover:bg-accent"
-              ><i data-lucide="home" class="h-5 w-5 mb-1"></i
-              ><span>Minha Unidade</span></a
-            >
-          </div>
-        </div>
-      </div>
+      <div class="rounded-lg border bg-card"><div class="p-6"><h3 class="text-2xl font-semibold">Reservas</h3><p class="text-sm text-muted-foreground">Suas reservas de áreas comuns</p></div><div class="p-6 pt-0"><div class="space-y-4"><div ng-repeat="res in residentData.upcomingReservationsList" class="border rounded-lg p-3"><div class="flex justify-between items-start"><div><h3 class="font-medium">{{res.area}}</h3><p class="text-sm text-muted-foreground">{{res.date}}, {{res.time}}</p></div><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="res.statusClass">{{res.status}}</span></div></div></div><div class="mt-4 text-right"><a ui-sref="app.reservations" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3">Ver Minhas Reservas</a><button ng-click="openCommonAreasModal()" class="ml-2 inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-9 px-3"><i data-lucide="calendar" class="mr-2 h-4 w-4"></i>Nova Reserva</button></div></div></div>
+      <div class="rounded-lg border bg-card"><div class="p-6"><h3 class="text-2xl font-semibold">Ações Rápidas</h3><p class="text-sm text-muted-foreground">Acesso rápido às funcionalidades</p></div><div class="p-6 pt-0"><div class="grid grid-cols-2 gap-3">
+        <button ng-click="openNewComplaintModal()" class="h-auto py-4 flex flex-col items-center justify-center rounded-md border hover:bg-accent"><i data-lucide="alert-triangle" class="h-5 w-5 mb-1"></i><span>Nova Reclamação</span></button>
+        <button ng-click="openCommonAreasModal()" class="h-auto py-4 flex flex-col items-center justify-center rounded-md border hover:bg-accent"><i data-lucide="building" class="h-5 w-5 mb-1"></i><span>Áreas Comuns</span></button>
+        <a ui-sref="app.messages" class="h-auto py-4 flex flex-col items-center justify-center rounded-md border hover:bg-accent"><i data-lucide="message-square" class="h-5 w-5 mb-1"></i><span>Mensagens</span></a>
+        <a ui-sref="app.settings" class="h-auto py-4 flex flex-col items-center justify-center rounded-md border hover:bg-accent"><i data-lucide="home" class="h-5 w-5 mb-1"></i><span>Minha Unidade</span></a>
+      </div></div></div>
     </div>
   </div>
 
-  <div
-    ng-show="modals.newComplaint.isOpen"
-    class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-  >
-    <form
-      ng-submit="submitComplaint()"
-      class="relative rounded-lg border bg-card w-full max-w-lg"
-    >
-      <div class="p-6" render-lucide-icons>
-        <h3 class="text-lg font-semibold">Nova Reclamação</h3>
-        <p class="text-sm text-muted-foreground">
-          Preencha os campos para registrar.
-        </p>
-        <button
-          type="button"
-          ng-click="closeNewComplaintModal()"
-          class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"
-        >
-          <i data-lucide="x" class="h-4 w-4"></i>
-        </button>
-      </div>
-      <div class="p-6 pt-0 space-y-4">
-        <div class="space-y-2">
-          <label class="text-sm font-medium">Título</label
-          ><input
-            required
-            placeholder="Título da reclamação"
-            class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
-          />
-        </div>
-        <div class="space-y-2">
-          <label class="text-sm font-medium">Descrição</label
-          ><textarea
-            required
-            placeholder="Descreva detalhadamente..."
-            class="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
-          ></textarea>
-        </div>
-      </div>
-      <div class="flex items-center p-6 justify-end">
-        <button
-          type="submit"
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-10 px-4 py-2"
-        >
-          Enviar
-        </button>
-      </div>
-    </form>
-  </div>
-  <div
-    ng-show="modals.commonAreas.isOpen"
-    class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-  >
-    <div class="relative rounded-lg border bg-card w-full max-w-3xl">
-      <div class="p-6" render-lucide-icons>
-        <h3 class="text-lg font-semibold">Áreas Comuns</h3>
-        <button
-          type="button"
-          ng-click="closeCommonAreasModal()"
-          class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"
-        >
-          <i data-lucide="x" class="h-4 w-4"></i>
-        </button>
-      </div>
-      <div class="p-6 pt-0">
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4 max-h-[60vh] overflow-y-auto pr-2"
-        >
-          <div
-            ng-repeat="area in residentData.commonAreas"
-            ng-click="openAreaDetail(area)"
-            class="cursor-pointer rounded-lg border shadow-md transition-all hover:shadow-lg overflow-hidden"
-          >
-            <img
-              ng-src="{{area.image}}"
-              alt="{{area.name}}"
-              class="w-full h-40 object-cover"
-            />
-            <div class="p-4">
-              <h4 class="text-lg font-bold">{{area.name}}</h4>
-              <p class="text-sm text-muted-foreground">{{area.description}}</p>
-              <span
-                class="mt-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                ng-class="{'bg-green-100 text-green-800': area.available, 'bg-red-100 text-red-800': !area.available}"
-                >{{ area.available ? 'Disponível' : 'Em Manutenção' }}</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    ng-show="modals.areaDetail.isOpen"
-    class="fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-lg border bg-card"
-  >
-    <div class="mx-auto mt-4 h-2 w-24 rounded-full bg-muted"></div>
-    <div class="p-4 pt-0 text-center" render-lucide-icons>
-      <button
-        type="button"
-        ng-click="closeAreaDetail()"
-        class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"
-      >
-        <i data-lucide="x" class="h-4 w-4"></i>
-      </button>
-      <h3 class="text-2xl font-bold mt-4">{{modals.areaDetail.data.name}}</h3>
-      <p class="text-sm text-muted-foreground">
-        {{modals.areaDetail.data.description}}
-      </p>
-    </div>
-  </div>
+  <div ng-show="modals.newComplaint.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"><form ng-submit="submitComplaint()" class="relative rounded-lg border bg-card w-full max-w-lg"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Nova Reclamação</h3><p class="text-sm text-muted-foreground">Preencha os campos para registrar.</p><button type="button" ng-click="closeNewComplaintModal()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button></div><div class="p-6 pt-0 space-y-4"><div class="space-y-2"><label class="text-sm font-medium">Título</label><input required placeholder="Título da reclamação" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" /></div><div class="space-y-2"><label class="text-sm font-medium">Descrição</label><textarea required placeholder="Descreva detalhadamente..." class="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"></textarea></div></div><div class="flex items-center p-6 justify-end"><button type="submit" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-10 px-4 py-2">Enviar</button></div></form></div>
+  <div ng-show="modals.commonAreas.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"><div class="relative rounded-lg border bg-card w-full max-w-3xl"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Áreas Comuns</h3><button type="button" ng-click="closeCommonAreasModal()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button></div><div class="p-6 pt-0"><div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4 max-h-[60vh] overflow-y-auto pr-2"><div ng-repeat="area in residentData.commonAreas" ng-click="openAreaDetail(area)" class="cursor-pointer rounded-lg border shadow-md transition-all hover:shadow-lg overflow-hidden"><img ng-src="{{area.image}}" alt="{{area.name}}" class="w-full h-40 object-cover"/><div class="p-4"><h4 class="text-lg font-bold">{{area.name}}</h4><p class="text-sm text-muted-foreground">{{area.description}}</p><span class="mt-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="{'bg-green-100 text-green-800': area.available, 'bg-red-100 text-red-800': !area.available}">{{ area.available ? 'Disponível' : 'Em Manutenção' }}</span></div></div></div></div></div></div>
+  <div ng-show="modals.areaDetail.isOpen" class="fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-lg border bg-card"><div class="mx-auto mt-4 h-2 w-24 rounded-full bg-muted"></div><div class="p-4 pt-0 text-center" render-lucide-icons><button type="button" ng-click="closeAreaDetail()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button><h3 class="text-2xl font-bold mt-4">{{modals.areaDetail.data.name}}</h3><p class="text-sm text-muted-foreground">{{modals.areaDetail.data.description}}</p></div></div>
 </div>
