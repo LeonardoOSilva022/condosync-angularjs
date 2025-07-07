@@ -1,0 +1,48 @@
+<div class="flex h-screen bg-background" render-lucide-icons>
+  
+  <div ng-controller="SidebarController" class="w-64 bg-sidebar text-sidebar-foreground flex flex-col h-screen border-r border-sidebar-border">
+    
+    <div class="p-4 border-b border-sidebar-border">
+      <div class="flex items-center space-x-3">
+        <i data-lucide="building" class="h-8 w-8 text-sidebar-primary"></i>
+        <h1 class="text-xl font-bold">CondoSync</h1>
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-4">
+      <nav class="px-2 space-y-2">
+        <a ng-repeat="item in filteredNavigation" 
+           ui-sref="{{item.state}}"
+           ui-sref-active="bg-sidebar-accent text-sidebar-primary"
+           class="flex items-center px-4 py-3 rounded-md transition-colors hover:bg-sidebar-accent/70">
+          <i data-lucide="{{item.iconName}}" class="h-5 w-5"></i>
+          <span class="ml-3">{{item.name}}</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="p-4 border-t border-sidebar-border">
+      <div class="flex items-center mb-4">
+        <div class="flex items-center">
+          <div class="relative flex h-9 w-9 shrink-0 overflow-hidden rounded-full bg-sidebar-primary text-sidebar-primary-foreground items-center justify-center font-bold">
+             {{ user.initials }}
+          </div>
+          <div class="ml-2">
+            <p class="font-medium text-sm">{{ user.name }}</p>
+            <p class="text-xs text-sidebar-foreground/80">{{ user.role === 'manager' ? 'Síndico' : 'Unidade ' + user.unitNumber }}</p>
+          </div>
+        </div>
+      </div>
+      <button ng-click="logout()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 w-full justify-start border border-sidebar-border text-sidebar-foreground bg-transparent hover:bg-sidebar-accent hover:text-sidebar-foreground">
+        <i data-lucide="log-out" class="h-4 w-4 mr-2"></i>
+        <span>Sair</span>
+      </button>
+    </div>
+  </div>
+
+  <main class="flex-1 overflow-auto">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div ui-view></div>
+    </div>
+  </main>
+</div>

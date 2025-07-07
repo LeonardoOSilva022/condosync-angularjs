@@ -1,0 +1,59 @@
+<div render-lucide-icons>
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight">Reservas</h1>
+      <p class="text-muted-foreground">Gerencie as reservas dos espaços comuns</p>
+    </div>
+    <button ng-if="!isManager" ng-click="openNewReservationModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+      <i data-lucide="plus" class="mr-2 h-4 w-4"></i>
+      <span>Nova Reserva</span>
+    </button>
+  </div>
+
+  <div ng-init="view.tab = 'upcoming'">
+    <div class="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+      <button ng-click="view.tab = 'upcoming'" ng-class="{'bg-background text-foreground shadow-sm': view.tab === 'upcoming'}" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium">Próximas Reservas</button>
+      <button ng-click="view.tab = 'history'" ng-class="{'bg-background text-foreground shadow-sm': view.tab === 'history'}" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium">Histórico</button>
+      <button ng-if="isManager" ng-click="view.tab = 'pending'" ng-class="{'bg-background text-foreground shadow-sm': view.tab === 'pending'}" class="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium">Pendentes de Aprovação</button>
+    </div>
+    
+    <div class="mt-4 space-y-4">
+      <div ng-show="view.tab === 'upcoming'">
+        <div ng-if="!upcomingReservations.length" class="text-center text-muted-foreground py-8">Não há próximas reservas.</div>
+        <div ng-repeat="res in upcomingReservations" class="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4"><h3 class="text-lg font-medium">{{ res.areaName }}</h3><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="res.statusClass">{{ res.status }}</span></div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm"><p><strong>Reservado por:</strong><br>{{ res.residentName }}</p><p><strong>Data:</strong><br>{{ res.date }}</p><p><strong>Horário:</strong><br>{{ res.time }}</p><p><strong>Motivo:</strong><br>{{ res.reason }}</p></div>
+        </div>
+      </div>
+      
+      <div ng-show="view.tab === 'history'">
+        <div ng-if="!historyReservations.length" class="text-center text-muted-foreground py-8">Não há histórico de reservas.</div>
+        <div ng-repeat="res in historyReservations" class="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4"><h3 class="text-lg font-medium">{{ res.areaName }}</h3><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="res.statusClass">{{ res.status }}</span></div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm"><p><strong>Reservado por:</strong><br>{{ res.residentName }}</p><p><strong>Data:</strong><br>{{ res.date }}</p><p><strong>Horário:</strong><br>{{ res.time }}</p><p><strong>Motivo:</strong><br>{{ res.reason }}</p></div>
+        </div>
+      </div>
+      
+      <div ng-if="isManager" ng-show="view.tab === 'pending'">
+        <div ng-if="!pendingReservations.length" class="text-center text-muted-foreground py-8">Não há reservas pendentes.</div>
+        <div ng-repeat="res in pendingReservations" class="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4"><h3 class="text-lg font-medium">{{ res.areaName }}</h3><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="res.statusClass">{{ res.status }}</span></div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm"><p><strong>Solicitado por:</strong><br>{{ res.residentName }}</p><p><strong>Data:</strong><br>{{ res.date }}</p><p><strong>Horário:</strong><br>{{ res.time }}</p><p><strong>Motivo:</strong><br>{{ res.reason }}</p></div>
+          <div class="flex gap-2 mt-4"><button ng-click="approveReservation(res)" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-9 px-3">Aprovar</button><button ng-click="declineReservation(res)" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-9 px-3 hover:bg-accent">Recusar</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="modal.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <form ng-submit="createReservation()" class="relative rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-lg">
+      <div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Nova Reserva</h3><p class="text-sm text-muted-foreground">Preencha os dados para solicitar a reserva.</p><button type="button" ng-click="closeNewReservationModal()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button></div>
+      <div class="p-6 pt-0 space-y-4">
+        <div class="space-y-2"><label class="text-sm font-medium">Espaço</label><select required class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm"><option value="" disabled selected>Selecione o espaço</option><option ng-repeat="area in availableAreas" value="{{area.id}}">{{area.name}}</option></select></div>
+        <div class="space-y-2"><label class="text-sm font-medium">Data</label><input required type="date" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" /></div>
+        <div class="space-y-2"><label class="text-sm font-medium">Motivo</label><textarea required placeholder="Descreva brevemente o motivo da reserva" class="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"></textarea></div>
+      </div>
+      <div class="flex items-center p-6 justify-end"><button type="submit" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-10 px-4 py-2">Solicitar Reserva</button></div>
+    </form>
+  </div>
+</div>

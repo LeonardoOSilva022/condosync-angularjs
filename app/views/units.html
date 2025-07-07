@@ -1,0 +1,48 @@
+<div render-lucide-icons>
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight">Unidades</h1>
+      <p class="text-muted-foreground">
+        Gerencie as unidades do condomínio
+      </p>
+    </div>
+    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+      <i data-lucide="plus" class="mr-2 h-4 w-4"></i>
+      Adicionar Unidade
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div ng-repeat="unit in units" class="rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div class="p-6 flex flex-row items-center justify-between pb-2">
+        <h3 class="text-lg font-medium tracking-tight">Apto {{ unit.apt }}</h3>
+        <i data-lucide="building" class="h-4 w-4 text-muted-foreground"></i>
+      </div>
+      <div class="p-6 pt-0">
+        <div class="space-y-2">
+          <div>
+            <p class="text-sm font-medium text-muted-foreground">Proprietário</p>
+            <p class="text-sm font-semibold">{{ unit.owner }}</p>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-muted-foreground">Status</p>
+            <p class="text-sm">
+              <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset" ng-class="unit.statusClass">
+                {{ unit.status }}
+              </span>
+            </p>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-muted-foreground">Moradores</p>
+            <p class="text-sm">{{ unit.residents }}</p>
+          </div>
+          <div class="pt-2">
+            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 w-full">
+              Ver Detalhes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="min-h-screen bg-muted flex items-center justify-center p-4" render-lucide-icons>
+    <div class="w-full max-w-md">
+  
+      <div class="mb-8 text-center">
+        <div class="flex items-center justify-center mb-4">
+          <i data-lucide="building" class="h-10 w-10 text-primary"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-primary">CondoSync</h1>
+        <p class="text-muted-foreground">Sistema de Gestão de Condomínios</p>
+      </div>
+  
+      <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+        <div class="flex flex-col space-y-1.5 p-6">
+          <h3 class="text-2xl font-semibold leading-none tracking-tight">Entrar</h3>
+          <p class="text-sm text-muted-foreground">Acesse sua conta para gerenciar seu condomínio</p>
+        </div>
+        <form ng-submit="handleSubmit()">
+          <div class="p-6 pt-0 space-y-4">
+            <div class="space-y-2">
+              <label for="email" class="text-sm font-medium leading-none">Email</label>
+              <input id="email" type="email" placeholder="seu@email.com" ng-model="user.email" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="password" class="text-sm font-medium leading-none">Senha</label>
+                <a href="#" class="text-xs text-primary underline-offset-4 hover:underline p-0 h-auto">Esqueceu a senha?</a>
+              </div>
+              <input id="password" type="password" ng-model="user.password" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm" />
+            </div>
+            
+            <div ng-if="loginError" class="text-destructive text-sm font-medium">
+              {{ loginError }}
+            </div>
+          </div>
+          <div class="flex items-center p-6 pt-0">
+            <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full" ng-disabled="isSubmitting">
+              <span ng-if="!isSubmitting">Entrar</span>
+              <span ng-if="isSubmitting" class="flex items-center">
+                <i data-lucide="loader-2" class="mr-2 h-4 w-4 animate-spin"></i>
+                Entrando...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+  
+      <div class="mt-6 text-center text-sm">
+        <p class="text-muted-foreground">Contas de demonstração:</p>
+        <div class="mt-2 space-y-1">
+          <p><strong>Síndico:</strong> joao@example.com / 123456</p>
+          <p><strong>Morador:</strong> maria@example.com / 123456</p>
+        </div>
+      </div>
+    </div>
+  </div>

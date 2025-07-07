@@ -1,0 +1,89 @@
+<div render-lucide-icons>
+  <div class="flex justify-between items-center mb-8">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight">Mensagens</h1>
+      <p class="text-muted-foreground">Comunicação interna do condomínio</p>
+    </div>
+    <button ng-click="openNewMessageModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+      <i data-lucide="plus" class="mr-2 h-4 w-4"></i>
+      <span>Nova Mensagem</span>
+    </button>
+  </div>
+
+  <div class="space-y-4">
+    <div ng-repeat="message in messages" class="rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div class="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+        <div>
+          <h3 class="text-lg font-medium tracking-tight">{{ message.from }}</h3>
+          <p class="text-sm text-muted-foreground">{{ message.date }}</p>
+        </div>
+        <i data-lucide="message-square" class="h-4 w-4 text-muted-foreground"></i>
+      </div>
+      <div class="p-6 pt-0">
+        <p class="mb-4 text-sm">{{ message.content }}</p>
+        <button ng-click="$parent.openReplyModal(message)" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">Responder</button>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="newMessageModal.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <form ng-submit="sendMessage()" class="relative rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-lg">
+      <div class="p-6" render-lucide-icons>
+        <h3 class="text-lg font-semibold">Nova Mensagem</h3>
+        <p class="text-sm text-muted-foreground">Envie uma mensagem interna.</p>
+        <button type="button" ng-click="closeNewMessageModal()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button>
+      </div>
+      <div class="p-6 pt-0 space-y-4">
+        <div ng-if="isManager" class="space-y-2">
+          <label class="text-sm font-medium">Destinatário</label>
+          <select required class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm">
+            <option value="all">Todos os moradores</option>
+            <option ng-repeat="recipient in recipients" value="{{recipient.id}}">{{recipient.name}} (Apto {{recipient.unit}})</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Assunto</label>
+          <input required placeholder="Informe o assunto" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" />
+        </div>
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Mensagem</label>
+          <textarea required placeholder="Escreva sua mensagem" class="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"></textarea>
+        </div>
+      </div>
+      <div class="flex items-center p-6 justify-end">
+        <button type="submit" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-10 px-4 py-2">
+          <i data-lucide="send" class="mr-2 h-4 w-4"></i>
+          <span>Enviar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div ng-show="replyModal.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <form ng-submit="sendReply()" class="relative rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-lg">
+      <div class="p-6" render-lucide-icons>
+        <h3 class="text-lg font-semibold">Responder Mensagem</h3>
+        <p class="text-sm text-muted-foreground">Respondendo para: <strong>{{ replyModal.originalMessage.from }}</strong></p>
+        <button type="button" ng-click="closeReplyModal()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button>
+      </div>
+      <div class="p-6 pt-0 space-y-4">
+        <div class="space-y-2">
+            <p class="text-sm font-medium text-muted-foreground">Mensagem original:</p>
+            <div class="rounded-md border border-input bg-muted/50 p-3 text-sm">
+                <p>"{{ replyModal.originalMessage.content }}"</p>
+            </div>
+        </div>
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Sua Resposta</label>
+          <textarea required placeholder="Escreva sua resposta" class="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"></textarea>
+        </div>
+      </div>
+      <div class="flex items-center p-6 justify-end">
+        <button type="submit" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-10 px-4 py-2">
+          <i data-lucide="send" class="mr-2 h-4 w-4"></i>
+          <span>Enviar Resposta</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

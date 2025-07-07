@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="meuApp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CondoSync</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="bg-background">
+
+    <div ui-view></div>
+
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="node_modules/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="app/app.js"></script>
+    <script src="app/routes.js"></script>
+    <script src="app/services/AuthService.js"></script>
+    <script src="app/services/PdfService.js"></script>
+    <script src="app/directives/lucideDirective.js"></script> 
+    <script src="app/controllers/LoginController.js"></script>
+    <script src="app/controllers/SidebarController.js"></script>
+    <script src="app/controllers/DashboardController.js"></script>
+    <script src="app/controllers/UnitsController.js"></script>
+    <script src="app/controllers/ResidentsController.js"></script>
+    <script src="app/controllers/FeesController.js"></script>
+    <script src="app/controllers/AnnouncementsController.js"></script>
+    <script src="app/controllers/ReservationsController.js"></script>
+    <script src="app/controllers/MessagesController.js"></script>
+    <script src="app/controllers/ComplaintsController.js"></script>
+    <script src="app/controllers/SettingsController.js"></script>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

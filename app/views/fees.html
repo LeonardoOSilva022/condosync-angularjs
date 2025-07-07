@@ -1,0 +1,49 @@
+<div render-lucide-icons>
+  <div class="flex justify-between items-center mb-8">
+    <div><h1 class="text-3xl font-bold tracking-tight">Taxas Condominiais</h1><p class="text-muted-foreground">Gerencie as taxas do condomínio</p></div>
+  </div>
+  <div class="grid gap-4 md:grid-cols-2 mb-8">
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium tracking-tight">Taxas Pendentes</h3><i data-lucide="dollar-sign" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">R$ {{ summary.pendingAmount }}</div><p class="text-xs text-muted-foreground">{{ summary.pendingDescription }}</p></div></div>
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6"><div class="flex flex-row items-center justify-between pb-2"><h3 class="text-sm font-medium tracking-tight">Taxas Pagas (Este Mês)</h3><i data-lucide="dollar-sign" class="h-4 w-4 text-muted-foreground"></i></div><div><div class="text-2xl font-bold">R$ {{ summary.paidAmount }}</div><p class="text-xs text-muted-foreground">{{ summary.paidDescription }}</p></div></div>
+  </div>
+
+  <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+    <div class="p-6"><h3 class="text-2xl font-semibold leading-none tracking-tight">Histórico de Taxas</h3></div>
+    <div class="p-6 pt-0"><div class="relative w-full overflow-auto"><table class="w-full caption-bottom text-sm"><thead class="[&_tr]:border-b"><tr class="border-b transition-colors hover:bg-muted/50"><th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Descrição</th><th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Valor</th><th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Vencimento</th><th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Status</th><th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Ações</th></tr></thead><tbody class="[&_tr:last-child]:border-0"><tr ng-repeat="fee in fees" class="border-b transition-colors hover:bg-muted/50"><td class="p-4 align-middle font-medium">{{ fee.description }}</td><td class="p-4 align-middle">R$ {{ fee.amount.toFixed(2) }}</td><td class="p-4 align-middle">{{ fee.dueDate }}</td><td class="p-4 align-middle"><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset" ng-class="fee.statusClass">{{ fee.status }}</span></td><td class="p-4 align-middle">
+      
+      <button ng-click="openFeeDetailsModal(fee)" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-8 w-8 p-0 hover:bg-accent">
+        <i data-lucide="eye" class="h-4 w-4"></i>
+      </button>
+
+    </td></tr></tbody></table></div></div>
+  </div>
+
+  <div ng-show="modal.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <div class="relative rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-lg" render-lucide-icons>
+      <div class="flex flex-col space-y-1.5 p-6"><h3 class="text-lg font-semibold">Detalhes da Taxa</h3><p class="text-sm text-muted-foreground">Informações completas da taxa selecionada.</p><button ng-click="closeFeeDetailsModal()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button></div>
+      <div class="p-6 pt-0 space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div><h4 class="font-semibold text-sm">Descrição</h4><p>{{ modal.selectedFee.description }}</p></div>
+          <div><h4 class="font-semibold text-sm">Valor Total</h4><p class="text-lg font-bold">R$ {{ modal.selectedFee.amount.toFixed(2) }}</p></div>
+          <div><h4 class="font-semibold text-sm">Vencimento</h4><p>{{ modal.selectedFee.dueDate }}</p></div>
+          <div><h4 class="font-semibold text-sm">Status</h4><p><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset" ng-class="modal.selectedFee.statusClass">{{ modal.selectedFee.status }}</span></p></div>
+          <div ng-if="modal.selectedFee.paymentDate"><h4 class="font-semibold text-sm">Data de Pagamento</h4><p>{{ modal.selectedFee.paymentDate }}</p></div>
+          <div ng-if="modal.selectedFee.paymentMethod"><h4 class="font-semibold text-sm">Método</h4><p>{{ modal.selectedFee.paymentMethod }}</p></div>
+        </div>
+        <div ng-if="modal.selectedFee.details && modal.selectedFee.details.length > 0">
+          <h4 class="font-semibold text-sm mb-2">Composição da Taxa</h4>
+          <div class="border rounded-md"><table class="w-full text-sm"><thead class="bg-muted/50"><tr><th class="p-2 text-left font-medium">Item</th><th class="p-2 text-right font-medium">Valor</th></tr></thead><tbody><tr ng-repeat="detail in modal.selectedFee.details" class="border-t"><td class="p-2">{{ detail.name }}</td><td class="p-2 text-right">R$ {{ detail.value.toFixed(2) }}</td></tr><tr class="border-t bg-muted/50"><td class="p-2 font-bold">Total</td><td class="p-2 text-right font-bold">R$ {{ modal.selectedFee.amount.toFixed(2) }}</td></tr></tbody></table></div>
+        </div>
+        <div ng-if="modal.selectedFee.status === 'Pago'">
+          <h4 class="font-semibold text-sm mb-2">Documentos Anexados</h4><p class="text-sm text-muted-foreground">Nenhum documento anexado.</p>
+          <div class="mt-3"><label for="file-upload-input" class="text-sm font-medium">Anexar Comprovante</label><div class="flex items-center gap-2 mt-1"><input id="file-upload-input" type="file" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium" /><button ng-click="attachFile()" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-9 px-3 border border-input"><i data-lucide="paperclip" class="h-4 w-4 mr-1"></i>Anexar</button></div></div>
+        </div>
+      </div>
+      <div class="flex items-center p-6 pt-4 justify-end space-x-2">
+        <button ng-if="modal.selectedFee.status === 'Pago'" ng-click="generatePdf(modal.selectedFee)" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"><i data-lucide="file-text" class="mr-2 h-4 w-4"></i><span>Gerar Recibo PDF</span></button>
+        <button ng-if="modal.selectedFee.status === 'Pendente'" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Pagar Taxa</button>
+        <button ng-click="closeFeeDetailsModal()" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input bg-background hover:bg-accent h-10 px-4 py-2">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
