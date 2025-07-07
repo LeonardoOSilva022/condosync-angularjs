@@ -1,7 +1,8 @@
 angular.module('meuApp').factory('AuthService', function($window) {
     var authService = {};
-    var userPayload = null; // Cache para o payload do usuário
+    var userPayload = null; // Cache para guardar os dados do usuário
 
+    // Função interna e segura para ler o token
     function decodeToken() {
         var token = authService.getToken();
         if (token) {
@@ -10,32 +11,36 @@ angular.module('meuApp').factory('AuthService', function($window) {
                 userPayload = JSON.parse(atob(token.split('.')[1]));
                 return true;
             } catch (e) {
-                userPayload = null;
+                authService.logout(); // Limpa tudo se o token for inválido
                 return false;
             }
         }
-        userPayload = null; // Garante que o payload está limpo se não houver token
+        userPayload = null;
         return false;
     }
 
     authService.getToken = function() { return $window.localStorage.getItem('token'); };
     
     authService.isLoggedIn = function() {
-        // Apenas verifica se o token pode ser decodificado corretamente
         return decodeToken();
     };
 
     authService.currentUser = function() {
+        // Garante que sempre retornemos os dados mais recentes
         if (!userPayload) {
             decodeToken();
         }
-        // Retorna o payload completo, que inclui name, role, e unitNumber
         return userPayload;
     };
     
     authService.logout = function() {
         userPayload = null;
         $window.localStorage.removeItem('token');
+    };
+
+    // Função crucial para forçar a atualização após o login
+    authService.updateUserFromToken = function() {
+        return decodeToken();
     };
 
     return authService;
