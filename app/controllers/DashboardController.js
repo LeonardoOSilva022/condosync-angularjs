@@ -34,8 +34,7 @@ angular
       },
       recentAnnouncements: [
         { title: "Reunião de Condomínio", date: "15/05/2025" },
-        { title: "Manutenção do Elevador", date: "20/05/2025" },
-        { title: "Limpeza da Caixa d'Água", date: "25/05/2025" }
+        { title: "Manutenção do Elevador", date: "20/05/2025" }
       ],
       recentComplaints: [
         { title: "Vazamento no Teto", unit: "202", date: "18/05/2025", status: "Pendente", statusClass: "bg-destructive/20 text-destructive" },
@@ -60,34 +59,18 @@ angular
         commonAreas: [
             { id: 1, name: "Salão de Festas", available: true, image: "https://placehold.co/300x200/e2e8f0/1e293b?text=Sal%C3%A3o+de+Festas", description: "Capacidade para 50 pessoas." },
             { id: 2, name: "Piscina", available: true, image: "https://placehold.co/300x200/e2e8f0/1e293b?text=Piscina", description: "Adulto e infantil." },
-            { id: 3, name: "Academia", available: true, image: "https://placehold.co/300x200/e2e8f0/1e293b?text=Academia", description: "Esteiras, bicicletas e pesos." },
-            { id: 4, name: "Espaço Gourmet", available: false, image: "https://placehold.co/300x200/e2e8f0/1e293b?text=Espa%C3%A7o+Gourmet", description: "Churrasqueira e forno de pizza." },
         ]
     };
     
     // --- Funções de Controle dos Modais ---
-    const openModal = function(modalName, data = null) {
-      $scope.modals[modalName].isOpen = true;
-      if (data) $scope.modals[modalName].data = data;
-      $timeout(lucide.createIcons, 0);
-    };
-    const closeModal = function(modalName) {
-      $scope.modals[modalName].isOpen = false;
-      if ($scope.modals[modalName]) $scope.modals[modalName].data = null;
-    };
-
-    $scope.openNewComplaintModal = function() { openModal('newComplaint'); };
-    $scope.closeNewComplaintModal = function() { closeModal('newComplaint'); };
-    $scope.openCommonAreasModal = function() { openModal('commonAreas'); };
-    $scope.closeCommonAreasModal = function() { closeModal('commonAreas'); };
-    $scope.openAreaDetail = function(area) {
-      openModal('areaDetail', area);
-    };
-    $scope.closeAreaDetail = function() { closeModal('areaDetail'); };
+    const openModal = (modalName, data = null) => { $scope.modals[modalName].isOpen = true; if (data) $scope.modals[modalName].data = data; $timeout(lucide.createIcons, 0); };
+    const closeModal = (modalName) => { $scope.modals[modalName].isOpen = false; if ($scope.modals[modalName]) $scope.modals[modalName].data = null; };
+    $scope.openNewComplaintModal = () => openModal('newComplaint');
+    $scope.closeNewComplaintModal = () => closeModal('newComplaint');
+    $scope.openCommonAreasModal = () => openModal('commonAreas');
+    $scope.closeCommonAreasModal = () => closeModal('commonAreas');
+    $scope.openAreaDetail = (area) => { openModal('areaDetail', area); };
+    $scope.closeAreaDetail = () => closeModal('areaDetail');
     
-    // --- Funções de Ação ---
-    $scope.submitComplaint = function() {
-        alert("Nova reclamação registrada com sucesso! (Simulação)");
-        $scope.closeNewComplaintModal();
-    };
+    $scope.submitComplaint = () => { alert("Nova reclamação registrada! (Simulação)"); $scope.closeNewComplaintModal(); };
   });

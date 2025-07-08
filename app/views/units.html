@@ -1,200 +1,23 @@
 <div render-lucide-icons>
   <div class="flex justify-between items-center mb-8">
-    <div>
-      <h1 class="text-3xl font-bold tracking-tight">Unidades</h1>
-      <p class="text-muted-foreground">Gerencie as unidades do condomínio</p>
-    </div>
-    <button
-      ng-click="openAddUnitModal()"
-      class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-    >
-      <i data-lucide="plus" class="mr-2 h-4 w-4"></i>
-      <span>Adicionar Unidade</span>
-    </button>
+    <div><h1 class="text-3xl font-bold tracking-tight">Unidades</h1><p class="text-muted-foreground">Gerencie as unidades do condomínio</p></div>
+    <button ng-click="openAddUnitModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"><i data-lucide="plus" class="mr-2 h-4 w-4"></i><span>Adicionar Unidade</span></button>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <div
-      ng-repeat="unit in units"
-      class="rounded-lg border bg-card text-card-foreground shadow-sm"
-    >
-      <div class="p-6 flex flex-row items-center justify-between pb-2">
-        <h3 class="text-lg font-medium tracking-tight">Apto {{ unit.apt }}</h3>
-        <i data-lucide="building" class="h-4 w-4 text-muted-foreground"></i>
-      </div>
-      <div class="p-6 pt-0">
-        <div class="space-y-2">
-          <div>
-            <p class="text-sm font-medium text-muted-foreground">
-              Proprietário
-            </p>
-            <p class="text-sm font-semibold">{{ unit.owner }}</p>
-          </div>
-          <div>
-            <p class="text-sm font-medium text-muted-foreground">Status</p>
-            <p class="text-sm">
-              <span
-                class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset"
-                ng-class="unit.statusClass"
-                >{{ unit.status }}</span
-              >
-            </p>
-          </div>
-          <div>
-            <p class="text-sm font-medium text-muted-foreground">Moradores</p>
-            <p class="text-sm">{{ unit.residents }}</p>
-          </div>
-          <div class="pt-2">
-            <button
-              ng-click="openViewUnitModal(unit)"
-              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border border-input bg-background hover:bg-accent h-9 px-3 w-full"
-            >
-              Ver Detalhes
-            </button>
-          </div>
-        </div>
-      </div>
+    <div ng-repeat="unit in units" class="rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div class="p-6 flex flex-row items-center justify-between pb-2"><h3 class="text-lg font-medium tracking-tight">Apto {{ unit.apt }}</h3><i data-lucide="building" class="h-4 w-4 text-muted-foreground"></i></div>
+      <div class="p-6 pt-0"><div class="space-y-2">
+          <div><p class="text-sm font-medium text-muted-foreground">Proprietário</p><p class="text-sm font-semibold">{{ unit.owner }}</p></div>
+          <div><p class="text-sm font-medium text-muted-foreground">Status</p><p class="text-sm"><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset" ng-class="unit.statusClass">{{ unit.status }}</span></p></div>
+          <div><p class="text-sm font-medium text-muted-foreground">Moradores</p><p class="text-sm">{{ unit.residents }}</p></div>
+          <div class="pt-2"><button ng-click="openViewUnitModal(unit)" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium border border-input bg-background hover:bg-accent h-9 px-3 w-full">Ver Detalhes</button></div>
+      </div></div>
     </div>
   </div>
-
-  <div
-    ng-show="modals.addUnit.isOpen"
-    class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-  >
-    <form name="addUnitForm" ng-submit="addNewUnit()" novalidate>
-      <div class="relative rounded-lg border bg-card w-full max-w-lg">
-        <div class="p-6" render-lucide-icons>
-          <h3 class="text-lg font-semibold">Adicionar Nova Unidade</h3>
-          <p class="text-sm text-muted-foreground">
-            Preencha os dados da unidade.
-          </p>
-          <button
-            type="button"
-            ng-click="closeAllModals()"
-            class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"
-          >
-            <i data-lucide="x" class="h-4 w-4"></i>
-          </button>
-        </div>
-
-        <div class="p-6 pt-0 space-y-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="text-sm font-medium">Apartamento</label>
-              <input
-                ng-model="newUnit.apt"
-                required
-                placeholder="Ex: 101"
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
-              />
-            </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium">Status</label>
-              <select
-                ng-model="newUnit.status"
-                required
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
-              >
-                <option value="Vago">Vago</option>
-                <option value="Ocupado">Ocupado</option>
-                <option value="Alugado">Alugado</option>
-              </select>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <label class="text-sm font-medium">Nome do Proprietário</label>
-            <input
-              ng-model="newUnit.owner"
-              ng-required="newUnit.status !== 'Vago'"
-              placeholder="Nome completo (opcional se 'Vago')"
-              class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
-            />
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="text-sm font-medium">Nº de Adultos</label>
-              <input
-                ng-model="newUnit.adults"
-                type="number"
-                min="0"
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
-              />
-            </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium">Nº de Crianças</label>
-              <input
-                ng-model="newUnit.children"
-                type="number"
-                min="0"
-                class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center p-6 justify-end">
-          <button
-            type="submit"
-            ng-disabled="addUnitForm.$invalid"
-            class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-10 px-4 py-2 disabled:opacity-50"
-          >
-            Adicionar Unidade
-          </button>
-        </div>
-      </div>
-    </form>
+  <div ng-show="modals.addUnit.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <form name="addUnitForm" ng-submit="addNewUnit()" novalidate><div class="relative rounded-lg border bg-card w-full max-w-lg"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Adicionar Nova Unidade</h3><p class="text-sm text-muted-foreground">Preencha os dados da unidade.</p><button type="button" ng-click="closeAllModals()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button></div><div class="p-6 pt-0 space-y-4"><div class="grid grid-cols-2 gap-4"><div class="space-y-2"><label class="text-sm font-medium">Apartamento</label><input ng-model="newUnit.apt" required placeholder="Ex: 101" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" /></div><div class="space-y-2"><label class="text-sm font-medium">Status</label><select ng-model="newUnit.status" required class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm"><option value="Vago">Vago</option><option value="Ocupado">Ocupado</option><option value="Alugado">Alugado</option></select></div></div><div class="space-y-2"><label class="text-sm font-medium">Nome do Proprietário</label><input ng-model="newUnit.owner" ng-required="newUnit.status !== 'Vago'" placeholder="Nome completo (opcional se 'Vago')" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" /></div><div class="grid grid-cols-2 gap-4"><div class="space-y-2"><label class="text-sm font-medium">Nº de Adultos</label><input ng-model="newUnit.adults" type="number" min="0" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" /></div><div class="space-y-2"><label class="text-sm font-medium">Nº de Crianças</label><input ng-model="newUnit.children" type="number" min="0" class="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" /></div></div></div><div class="flex items-center p-6 justify-end"><button type="submit" ng-disabled="addUnitForm.$invalid" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-primary text-primary-foreground h-10 px-4 py-2 disabled:opacity-50">Adicionar Unidade</button></div></div></form>
   </div>
-
-  <div
-    ng-show="modals.viewUnit.isOpen"
-    class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-  >
-    <div class="relative rounded-lg border bg-card w-full max-w-lg">
-      <div class="p-6" render-lucide-icons>
-        <h3 class="text-lg font-semibold">
-          Detalhes do Apto {{ modals.viewUnit.data.apt }}
-        </h3>
-        <p class="text-sm text-muted-foreground">
-          Informações completas da unidade.
-        </p>
-        <button
-          type="button"
-          ng-click="closeAllModals()"
-          class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"
-        >
-          <i data-lucide="x" class="h-4 w-4"></i>
-        </button>
-      </div>
-      <div class="p-6 pt-0 space-y-4">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <h4 class="font-semibold text-sm">Proprietário</h4>
-            <p>{{ modals.viewUnit.data.owner }}</p>
-          </div>
-          <div>
-            <h4 class="font-semibold text-sm">Status</h4>
-            <p>
-              <span
-                class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                ng-class="modals.viewUnit.data.statusClass"
-                >{{ modals.viewUnit.data.status }}</span
-              >
-            </p>
-          </div>
-          <div>
-            <h4 class="font-semibold text-sm">Moradores</h4>
-            <p>{{ modals.viewUnit.data.residents }}</p>
-          </div>
-        </div>
-      </div>
-      <div class="flex items-center p-6 justify-end">
-        <button
-          ng-click="closeAllModals()"
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-10 px-4 py-2"
-        >
-          Fechar
-        </button>
-      </div>
-    </div>
+  <div ng-show="modals.viewUnit.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <div class="relative rounded-lg border bg-card w-full max-w-lg"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Detalhes do Apto {{ modals.viewUnit.data.apt }}</h3><p class="text-sm text-muted-foreground">Informações completas da unidade.</p><button type="button" ng-click="closeAllModals()" class="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100"><i data-lucide="x" class="h-4 w-4"></i></button></div><div class="p-6 pt-0 space-y-4"><div class="grid grid-cols-2 gap-4"><div><h4 class="font-semibold text-sm">Proprietário</h4><p>{{ modals.viewUnit.data.owner }}</p></div><div><h4 class="font-semibold text-sm">Status</h4><p><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="modals.viewUnit.data.statusClass">{{ modals.viewUnit.data.status }}</span></p></div><div><h4 class="font-semibold text-sm">Moradores</h4><p>{{ modals.viewUnit.data.residents }}</p></div></div></div><div class="flex items-center p-6 justify-end"><button ng-click="closeAllModals()" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input bg-background h-10 px-4 py-2">Fechar</button></div></div>
   </div>
 </div>

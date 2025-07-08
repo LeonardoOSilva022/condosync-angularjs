@@ -1,6 +1,6 @@
 angular
   .module("meuApp")
-  .controller("ResidentsController", function ($scope, $timeout, $state, AuthService) {
+  .controller("ResidentsController", function ($scope, $timeout, $state, AuthService, DataService) { // INJETAMOS O DATASERVICE
     
     // --- Inicialização e Segurança ---
     const currentUser = AuthService.currentUser() || {};
@@ -19,16 +19,12 @@ angular
     // --- Objeto para o formulário de novo morador ---
     $scope.newResident = {};
 
-    // --- Dados Simulados ---
-    $scope.residents = [
-        { id: 1, name: "Ana Silva", unit: "101", phone: "(11) 99123-4567", email: "ana.silva@email.com", status: "Proprietário", statusClass: "bg-green-100 text-green-700 ring-1 ring-inset ring-green-600/20" },
-        { id: 2, name: "Roberto Santos", unit: "102", phone: "(11) 98765-4321", email: "roberto.santos@email.com", status: "Proprietário", statusClass: "bg-green-100 text-green-700 ring-1 ring-inset ring-green-600/20" },
-        { id: 3, name: "Carla Mendes", unit: "201", phone: "(11) 97654-3210", email: "carla.mendes@email.com", status: "Inquilino", statusClass: "bg-yellow-100 text-yellow-700 ring-1 ring-inset ring-yellow-600/20" },
-    ];
+    // ===== AQUI ESTÁ A MUDANÇA PRINCIPAL =====
+    // A lista de moradores agora vem da nossa fonte da verdade!
+    $scope.residents = DataService.getResidents();
 
     // --- Funções Genéricas para Modais ---
     const openModal = (modalName, data = null) => {
-      // Cria uma cópia dos dados para edição, para não alterar o original até salvar
       if (data) $scope.modals[modalName].data = angular.copy(data);
       $scope.modals[modalName].isOpen = true;
       $timeout(lucide.createIcons, 0);
@@ -50,6 +46,7 @@ angular
 
     // --- Funções de Ação (Simuladas) ---
     $scope.addResident = function() {
+        // No futuro, esta função chamará o DataService para adicionar o morador
         alert("Morador '" + $scope.newResident.name + "' adicionado com sucesso! (Simulação)");
         $scope.closeAllModals();
     };
@@ -61,7 +58,7 @@ angular
 
     $scope.deleteResident = function() {
         var residentName = $scope.modals.delete.data.name;
-        // Lógica para remover o morador da lista $scope.residents
+        // No futuro, esta função chamará o DataService para remover o morador
         $scope.residents = $scope.residents.filter(res => res.id !== $scope.modals.delete.data.id);
         alert("Morador '" + residentName + "' removido com sucesso! (Simulação)");
         $scope.closeAllModals();
