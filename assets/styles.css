@@ -858,6 +858,10 @@ body {
   max-width: 28rem;
 }
 
+.max-w-2xl {
+  max-width: 42rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1242,6 +1246,10 @@ body {
   text-align: right;
 }
 
+.align-middle {
+  vertical-align: middle;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1405,10 +1413,6 @@ body {
   --tw-ring-inset: inset;
 }
 
-.ring-gray-600\/20 {
-  --tw-ring-color: rgb(75 85 99 / 0.2);
-}
-
 .ring-green-600\/20 {
   --tw-ring-color: rgb(22 163 74 / 0.2);
 }
@@ -1514,6 +1518,10 @@ body {
 
 .hover\:bg-destructive\/10:hover {
   background-color: hsl(var(--destructive) / 0.1);
+}
+
+.hover\:bg-muted\/50:hover {
+  background-color: hsl(var(--muted) / 0.5);
 }
 
 .hover\:bg-primary\/90:hover {

@@ -1,55 +1,60 @@
 <div render-lucide-icons>
   <div class="flex justify-between items-center mb-8">
-    <div>
-      <h1 class="text-3xl font-bold tracking-tight">Controle de Taxas</h1>
-      <p class="text-muted-foreground">{{ isManager ? 'Gerencie as taxas de todas as unidades' : 'Consulte suas taxas' }}</p>
-    </div>
-    <button ng-if="isManager" ng-click="openNewFeeModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-      <i data-lucide="plus" class="mr-2 h-4 w-4"></i>
-      <span>Lançar Nova Taxa</span>
-    </button>
+    <div><h1 class="text-3xl font-bold tracking-tight">Controle de Taxas</h1><p class="text-muted-foreground">{{ isManager ? 'Gerencie as taxas de todas as unidades' : 'Consulte o histórico de taxas da sua unidade' }}</p></div>
+    <button ng-if="isManager" ng-click="openNewFeeModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"><i data-lucide="plus" class="mr-2 h-4 w-4"></i><span>Lançar Nova Taxa</span></button>
   </div>
 
   <div ng-if="isManager">
     <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
       <div class="p-6"><h3 class="text-2xl font-semibold">Situação por Unidade</h3></div>
-      <div class="p-6 pt-0">
-        <div class="relative w-full overflow-auto">
-          <table class="w-full caption-bottom text-sm">
-            <thead><tr class="border-b"><th class="h-12 px-4 text-left">Unidade</th><th class="h-12 px-4 text-left">Proprietário</th><th class="h-12 px-4 text-left">Status Financeiro</th><th class="h-12 px-4 text-left">Ações</th></tr></thead>
-            <tbody>
-              <tr ng-repeat="unit in unitsWithFees" class="border-b">
-                <td class="p-4 font-medium">Apto {{ unit.apt }}</td>
-                <td class="p-4">{{ unit.owner }}</td>
-                <td class="p-4"><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="getUnitStatus(unit).class">{{ getUnitStatus(unit).text }}</span></td>
-                <td class="p-4">
-                  <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input h-9 px-3 hover:bg-accent">Ver Detalhes</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <div class="p-6 pt-0"><div class="relative w-full overflow-auto"><table class="w-full caption-bottom text-sm">
+        <thead><tr class="border-b"><th class="h-12 px-4 text-left">Unidade</th><th class="h-12 px-4 text-left">Proprietário</th><th class="h-12 px-4 text-left">Status Financeiro</th><th class="h-12 px-4 text-left">Ações</th></tr></thead>
+        <tbody>
+          <tr ng-repeat="unit in unitsWithFees" class="border-b">
+            <td class="p-4 font-medium">Apto {{ unit.apt }}</td>
+            <td class="p-4">{{ unit.owner }}</td>
+            <td class="p-4"><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold" ng-class="getUnitStatus(unit).class">{{ getUnitStatus(unit).text }}</span></td>
+            <td class="p-4">
+              <button ng-click="openUnitFeeDetailsModal(unit)" class="inline-flex items-center justify-center rounded-md text-sm font-medium border border-input h-9 px-3 hover:bg-accent">Ver Detalhes</button>
+            </td>
+          </tr>
+        </tbody>
+      </table></div></div>
     </div>
   </div>
 
   <div ng-if="!isManager">
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+      <div class="p-6"><h3 class="text-2xl font-semibold leading-none tracking-tight">Histórico de Taxas</h3></div>
+      <div class="p-6 pt-0"><div class="relative w-full overflow-auto">
+        <table class="w-full caption-bottom text-sm">
+          <thead><tr class="border-b"><th class="h-12 px-4 text-left">Descrição</th><th class="h-12 px-4 text-left">Valor</th><th class="h-12 px-4 text-left">Vencimento</th><th class="h-12 px-4 text-left">Status</th><th class="h-12 px-4 text-left">Ações</th></tr></thead>
+          <tbody>
+            <tr ng-repeat="fee in myFees" class="border-b transition-colors hover:bg-muted/50">
+              <td class="p-4 align-middle font-medium">{{ fee.description }}</td>
+              <td class="p-4 align-middle">R$ {{ fee.amount.toFixed(2) }}</td>
+              <td class="p-4 align-middle">{{ fee.dueDate }}</td>
+              <td class="p-4 align-middle"><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset" ng-class="fee.statusClass">{{ fee.status }}</span></td>
+              <td class="p-4 align-middle"><button ng-click="openResidentFeeDetailModal(fee)" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium h-8 w-8 p-0 hover:bg-accent"><i data-lucide="eye" class="h-4 w-4"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div></div>
     </div>
-
+  </div>
 
   <div ng-show="modals.newFee.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-    <form ng-submit="launchNewFee()" class="relative rounded-lg border bg-card w-full max-w-lg">
-      <div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Lançar Nova Taxa</h3><p class="text-sm text-muted-foreground">Lance uma multa, taxa extra ou outra cobrança.</p><button type="button" ng-click="closeAllModals()" class="absolute right-4 top-4 opacity-70"><i data-lucide="x" class="h-4 w-4"></i></button></div>
-      <div class="p-6 pt-0 space-y-4">
-        <div class="space-y-2"><label class="text-sm font-medium">Unidade</label><select required class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"><option value="" disabled selected>Selecione a unidade</option><option ng-repeat="unit in unitsWithFees" value="{{unit.id}}">Apto {{unit.apt}} - {{unit.owner}}</option></select></div>
-        <div class="space-y-2"><label class="text-sm font-medium">Descrição</label><input required placeholder="Ex: Multa por barulho" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="space-y-2"><label class="text-sm font-medium">Valor (R$)</label><input required type="number" placeholder="150.00" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div>
-          <div class="space-y-2"><label class="text-sm font-medium">Vencimento</label><input required type="date" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div>
-        </div>
-      </div>
-      <div class="flex items-center p-6 justify-end"><button type="submit" class="bg-primary text-primary-foreground h-10 px-4 py-2 inline-flex items-center justify-center rounded-md text-sm font-medium">Lançar Taxa</button></div>
-    </form>
+    <form name="newFeeForm" ng-submit="launchNewFee()" novalidate class="relative rounded-lg border bg-card w-full max-w-lg"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Lançar Nova Taxa</h3><p class="text-sm text-muted-foreground">Lance uma multa, taxa extra ou outra cobrança.</p><button type="button" ng-click="closeAllModals()" class="absolute right-4 top-4 opacity-70"><i data-lucide="x" class="h-4 w-4"></i></button></div><div class="p-6 pt-0 space-y-4">
+      <div class="space-y-2"><label class="text-sm font-medium">Unidade</label><select ng-model="newFeeData.unit" ng-options="unit as 'Apto ' + unit.apt + ' - ' + unit.owner for unit in unitsWithFees" required class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"><option value="" disabled>Selecione a unidade</option></select></div>
+      <div class="space-y-2"><label class="text-sm font-medium">Descrição</label><input ng-model="newFeeData.description" required placeholder="Ex: Multa por barulho" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div>
+      <div class="grid grid-cols-2 gap-4"><div class="space-y-2"><label class="text-sm font-medium">Valor (R$)</label><input ng-model="newFeeData.amount" required type="number" placeholder="150.00" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div><div class="space-y-2"><label class="text-sm font-medium">Vencimento</label><input ng-model="newFeeData.dueDate" required type="date" class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm"/></div></div>
+    </div><div class="flex items-center p-6 justify-end"><button type="submit" ng-disabled="newFeeForm.$invalid" class="bg-primary text-primary-foreground h-10 px-4 py-2 inline-flex items-center justify-center rounded-md text-sm font-medium disabled:opacity-50">Lançar Taxa</button></div></form>
   </div>
   
+  <div ng-show="modals.unitFeeDetail.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <div class="relative rounded-lg border bg-card w-full max-w-2xl"><div class="p-6" render-lucide-icons><h3 class="text-lg font-semibold">Histórico de Taxas - Apto {{ modals.unitFeeDetail.data.apt }}</h3><p class="text-sm text-muted-foreground">Proprietário: {{ modals.unitFeeDetail.data.owner }}</p><button type="button" ng-click="closeAllModals()" class="absolute right-4 top-4 opacity-70"><i data-lucide="x" class="h-4 w-4"></i></button></div><div class="p-6 pt-0"><div class="relative w-full overflow-auto max-h-[60vh]"><table class="w-full text-sm"><thead><tr class="border-b"><th class="h-12 px-4 text-left">Descrição</th><th class="h-12 px-4 text-left">Valor</th><th class="h-12 px-4 text-left">Status</th></tr></thead><tbody><tr ng-repeat="fee in modals.unitFeeDetail.data.fees" class="border-b"><td class="p-4">{{fee.description}}</td><td class="p-4">R$ {{fee.amount.toFixed(2)}}</td><td class="p-4"><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset" ng-class="fee.statusClass">{{ fee.status }}</span></td></tr></tbody></table></div></div><div class="flex items-center p-6 justify-end"><button ng-click="closeAllModals()" class="border bg-background h-10 px-4 py-2 inline-flex items-center justify-center rounded-md text-sm font-medium">Fechar</button></div></div>
   </div>
+
+  <div ng-show="modals.feeDetail.isOpen" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    </div>
+</div>
