@@ -854,6 +854,14 @@ body {
   min-width: 150px;
 }
 
+.min-w-\[100px\] {
+  min-width: 100px;
+}
+
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+
 .max-w-3xl {
   max-width: 48rem;
 }
@@ -894,6 +902,14 @@ body {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.list-inside {
+  list-style-position: inside;
+}
+
+.list-disc {
+  list-style-type: disc;
 }
 
 .grid-cols-1 {

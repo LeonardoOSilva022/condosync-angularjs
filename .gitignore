@@ -1,0 +1,15 @@
+# Ignorar dependências do Node.js
+node_modules/
+
+# Arquivo de estilo gerado pelo Tailwind CSS
+# É uma boa prática ignorar arquivos que são gerados por um processo de build
+/assets/styles.css
+
+# Arquivos de log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db

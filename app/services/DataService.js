@@ -9,6 +9,7 @@ angular
         { id: 101, apt: "101", owner: "Ana Silva", status: "Ocupado" },
         { id: 102, apt: "102", owner: "Roberto Santos", status: "Ocupado" },
         { id: 201, apt: "201", owner: "Fernanda Costa", status: "Alugado" },
+        { id: 203, apt: "203", owner: "Fernanda Montenegro", status: "Alugado" }
         // ... (outras unidades para completar 20 no total se necessário)
     ];
 
@@ -20,9 +21,11 @@ angular
     ];
     
     let fees = [
-        { id: "fee-101-1", unitId: 101, description: "Taxa Condominial - Maio/2025", amount: 350.00, dueDate: "10/05/2025", status: "Pago", statusClass: "bg-green-100 text-green-800", paymentDate: "05/05/2025", details: [{ name: "Taxa de limpeza", value: 100.00 }] },
+        { id: "fee-101-1", unitId: 101, description: "Taxa Condominial - Maio/2025", amount: 350.00, dueDate: "10/05/2025", status: "Pago", statusClass: "bg-green-100 text-green-800", paymentDate: "05/05/2025", details: [{ name: "Condomínio", value: 350.00 }] },
         { id: "fee-101-2", unitId: 101, description: "Taxa Condominial - Junho/2025", amount: 350.00, dueDate: "10/06/2025", status: "Pendente", statusClass: "bg-yellow-100 text-yellow-800" },
-        { id: "fee-102-1", unitId: 102, description: "Taxa Condominial - Junho/2025", amount: 350.00, dueDate: "10/06/2025", status: "Atrasado", statusClass: "bg-red-100 text-red-800" },
+        { id: "fee-201-1", unitId: 201, description: "Taxa Condominial - Junho/2025", amount: 350.00, dueDate: "10/06/2025", status: "Atrasado", statusClass: "bg-red-100 text-red-800" },
+        { id: "fee-203-1", unitId: 203, description: "Taxa Condominial - Junho/2025", amount: 350.00, dueDate: "10/06/2025", status: "Atrasado", statusClass: "bg-red-100 text-red-800" },
+        { id: "fee-102-1", unitId: 102, description: "Taxa Condominial - Maio/2025", amount: 350.00, dueDate: "10/05/2025", status: "Pago", statusClass: "bg-green-100 text-green-800", paymentDate: "05/05/2025", details: [{ name: "Taxa de limpeza", value: 100.00 }] },
     ];
 
     // ===== FUNÇÕES GETTER COMPLETAS E CORRIGIDAS =====
