@@ -730,6 +730,10 @@ body {
   margin-top: 1.5rem;
 }
 
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
 .block {
   display: block;
 }
@@ -846,6 +850,10 @@ body {
   width: 100%;
 }
 
+.min-w-\[150px\] {
+  min-width: 150px;
+}
+
 .max-w-3xl {
   max-width: 48rem;
 }
@@ -904,8 +912,16 @@ body {
   flex-direction: column;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .items-start {
   align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
 }
 
 .items-center {
